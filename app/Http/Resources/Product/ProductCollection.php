@@ -20,6 +20,7 @@ class ProductCollection extends ResourceCollection
                 {
                     return [
                         'name' => $product->name,
+                        'more_detail' => route('products.show', $product->id),
                         'reviews' => ReviewResource::collection($product->reviews),
                     ];
                 }),
