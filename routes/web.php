@@ -14,3 +14,8 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+Route::get('test', function(){
+   return App\Model\Product::find(23)->reviews;
+});
