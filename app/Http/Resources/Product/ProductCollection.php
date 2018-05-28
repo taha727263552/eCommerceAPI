@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Product;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use App\Http\Resources\Review\ReviewResource;
 
 class ProductCollection extends ResourceCollection
 {
@@ -14,6 +15,14 @@ class ProductCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return ['data' => $this->collection];
+        return [
+            'data' => $this->collection->transform(function($product)
+                {
+                    return [
+                        'name' => $product->name,
+                        'reviews' => ReviewResource::collection($product->reviews),
+                    ];
+                }),
+        ];
     }
 }
