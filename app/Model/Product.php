@@ -8,8 +8,12 @@ class Product extends Model
 {
 
     protected $fillable =[
-        'name', 'stock', 'discount', 'detail', 'price'
+        'name', 'stock', 'discount', 'detail', 'price', 'user_id'
     ];
+
+    // protected $hidden = [
+    //     'user_id'
+    // ];
 
     public function reviews()
     {

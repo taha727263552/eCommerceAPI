@@ -28,7 +28,8 @@ class ProductRequest extends FormRequest
             'price' =>'required|Numeric|min:10',
             'detail' => 'required',
             'stock' => 'required|max:6',
-            'discount' =>'required|max:2'
+            'discount' =>'required|max:2',
+            'user_id' => 'required'
         ];
     }
 }

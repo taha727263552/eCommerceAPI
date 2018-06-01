@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Resources\Product\ProductCollection;
 use App\Http\Resources\Product\ProductResource;
 use App\Http\Requests\ProductRequest;
+use Auth;
+use App\Exceptions\productNotBelongsToUser;
 
 class ProductController extends Controller
 {
@@ -50,6 +52,7 @@ class ProductController extends Controller
         $product->stock = $request->stock;
         $product->discount = $request->discount;
         $product->price = $request->price;
+        $product->user_id = $request->user_id;
         
         $product->save();
 
@@ -91,6 +94,11 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
+
+        // return $product->user_id == Auth::id() ? 'true' : 'false';
+        // $this->authorize('update', $product);
+        $this->productCheckBelongsTo($product);
+
         // $productupdate = Product::findOrFail($product->id);
         
         // $productupdate->name = $request->name;
@@ -102,7 +110,6 @@ class ProductController extends Controller
         // $productupdate->save();
 
         // is the same thing upp == down
-
         $product->update($request->all());
         return response()->json([
             'data' => new ProductResource($product),
@@ -124,5 +131,11 @@ class ProductController extends Controller
             'status' => '200 ok',
             'descreption' => 'product deleted success'
         ], 204);
+    }
+ 
+    public function productCheckBelongsTo(Product $product)
+    {
+        if(Auth::id() !== $product->user_id)
+            throw new productNotBelongsToUser;
     }
 }
