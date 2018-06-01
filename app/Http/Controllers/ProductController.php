@@ -54,10 +54,10 @@ class ProductController extends Controller
         $product->save();
 
         return response()->json([
-            'data' => $product,
+            'data' => new ProductResource($product),
             'status' => '200 ok',
             'descreption' => 'product insret success'
-        ]);
+        ], 201);
     }
 
     /**
@@ -91,7 +91,24 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        // $productupdate = Product::findOrFail($product->id);
+        
+        // $productupdate->name = $request->name;
+        // $productupdate->detail = $request->detail;
+        // $productupdate->stock = $request->stock;
+        // $productupdate->discount = $request->discount;
+        // $productupdate->price = $request->price;
+        
+        // $productupdate->save();
+
+        // is the same thing upp == down
+
+        $product->update($request->all());
+        return response()->json([
+            'data' => new ProductResource($product),
+            'status' => '200 ok',
+            'descreption' => 'product update success'
+        ], 201);
     }
 
     /**
