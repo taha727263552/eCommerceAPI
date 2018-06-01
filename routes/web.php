@@ -19,3 +19,6 @@ Route::get('/', function () {
 Route::get('test', function(){
    return App\Model\Product::find(23)->reviews;
 });
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
