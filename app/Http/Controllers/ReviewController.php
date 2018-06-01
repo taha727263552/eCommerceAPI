@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Model\Review;
 use Illuminate\Http\Request;
 use App\Http\Resources\Review\ReviewResource;
+use App\Http\Requests\ReviewRequest;
 
 class ReviewController extends Controller
 {
@@ -13,9 +14,9 @@ class ReviewController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(\App\Model\Product $product)
     {
-        return ReviewResource::collection(Review::all());
+        return ReviewResource::collection($product->reviews);
     }
 
     /**
@@ -32,11 +33,29 @@ class ReviewController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param \App\Http\Requests\ReviewRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ReviewRequest $request, \App\Model\Product $product)
     {
-        //
+        
+        // $review = Review::create([
+        //     'customer' => $request->customer,
+        //     'review' => $request->review,
+        //     'star' => $request->star,
+        //     'product_id' => $product->id
+        // ]);
+        
+        // the next code is the same of above
+
+        $review = new Review($request->all());
+
+        $product->reviews()->save($review);
+
+        return response()->json([
+            'review' => new ReviewResource($review),
+            'status' => '200 ok'
+        ], 201);
     }
 
     /**
