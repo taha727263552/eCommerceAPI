@@ -87,9 +87,13 @@ class ReviewController extends Controller
      * @param  \App\Model\Review  $review
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Review $review)
+    public function update(Request $request,\App\Model\Product $product, Review $review)
     {
-        //
+        $review->update($request->all());
+        return response()->json([
+            'review' => new ReviewResource($review),
+            'status' => '200 ok'
+        ], 201);
     }
 
     /**
@@ -98,8 +102,12 @@ class ReviewController extends Controller
      * @param  \App\Model\Review  $review
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Review $review)
+    public function destroy(\App\Model\Product $product, Review $review)
     {
-        //
+        $review->delete();
+        return response()->json([
+            'status' => '200 ok',
+            'descreption' => 'review deleted success'
+        ], 204);
     }
 }
